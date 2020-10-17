@@ -9,19 +9,28 @@
 <body>
     <header class="quiz-header">
         <h1>CS-Quiz</h1>
-        <div class="start-time-container">
+        <section>
             <button id="start">start</button>
-            <h2 id="timer">75</h2>
-        </div>
+        </section>
+        <section>
+            <h2 id="timer"></h2>
+        </section>
+        
     </header>
     <main class="page-content">
-        <section class="displayed-message">
+        <section id="displayed-message">
             <p>Choose the correct answer choice for each question to gain 5 points. There are 3 questions. </p>
+        </section>
+        <section class="current-problem-container">
+            <div class="problem-container-item" id="question-item">
+
+            </div>
+            <section class="problem-container-item" id="answer-choices-shown">
+            </section>
         </section>
 
     </main>
     <footer>
-        <button id="high-score-button">High Scores</button>
     </footer>
     <script src="./assets/js/csquiz.js"></script>
 </body>
