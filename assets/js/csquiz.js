@@ -156,15 +156,17 @@ var countdown = function() {
 
     //create elements for the player's score and other info.
 
-    let finalScoreEl = document.createElement("div")
+    let finalScoreEl = document.createElement("form");
 
      let nameInput = document.createElement("input");
+     nameInput.id = "input-box";
      nameInput.setAttribute("type", "text");
+     nameInput.setAttribute("name", "Player-Name");
      nameInput.setAttribute("placeholder", "Enter Name");
      nameInput.addEventListener("submit", inputPlayerInfo);
 
      let shownScore = document.createElement("div");
-     shownScore.innerHTML = "<h3> Your Final Score is " + playerScore + " Nice Work! <br> The current high score is " + localStorage.getItem("highScoreValue") + " </h3> <br> <h4> Enter name and try again <h4>";
+     shownScore.innerHTML = "<h3> Your Final Score is " + playerScore + " Nice Work! <br> The current high score is " + localStorage.getItem("highScoreValue") + " </h3> <br> <h4> Enter name to reset and try again <h4>";
 
      finalScoreEl.appendChild(shownScore);
      finalScoreEl.appendChild(nameInput);
@@ -172,12 +174,15 @@ var countdown = function() {
 
  }
 
- var inputPlayerInfo = function() {
+ var inputPlayerInfo = function(event) {
+     event.preventDefault();
      //input player's score if higher than current high score in 
      if(localStorage.getItem("highScoreValue") < playerScore) {
         localStorage.setItem("highScoreValue", playerScore);
-        localStorage.setItem("highScoreName", player)
+        localStorage.setItem("highScoreName", document.getElementById("input-box").value);
      }
+     location.reload();
+
 
     
 
