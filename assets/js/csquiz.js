@@ -2,34 +2,27 @@ var timerEl = document.getElementById("timer");
 var startBtn = document.getElementById("start");
 var questionEl = document.getElementById("question-item");
 var questionCounter = 0
+localStorage.setItem("highScoreValue", "0");
+localStorage.setItem("highScoreName", " ");
 var playerScore = 0;
+var timeRemaining = 30;
 
 //array that, at each index (position), holds an object that holds the information for a question
 var questionObjectArray = [{
-    name: "question insert 1",
-    answers: ["A. right","B. wrong","C. wrong","D. wrong"], 
-    key: 0
+    name: "Commonly used data types DO NOT include",
+    answers: ["A. Strings","B. Booleans","C. Alerts","D. Numbers"], 
+    key: 2
 
 },
 {
-    name: "question insert 2",
-    answers: ["A. wrong","B. right", "C. wrong","D. wrong"],
-    key: 1
-},
-{
-    name: "question insert 3",
-    answers: ["A. wrong", "B. wrong", "C. right", "D. wrong"],
-    key: 2
-},
-{
-    name: "question insert 4",
-    answers: ["A. wrong", "B. wrong", "C. wrong", "D. right"],
+    name: "Arrays can contain",
+    answers: ["A. Arrays","B. Numbers", "C. Objects","D. All of the above"],
     key: 3
 },
 {
-    name: "question insert 5",
-    answers: ["True","False"],
-    key: 0
+    name: "An if/else statement must be enclosed by",
+    answers: ["A. square brackets", "B. curly brackets", "C. quotes", "D. parenthesis "],
+    key: 1
 }]
 
 //function to start quiz once the start button is clicked
@@ -46,7 +39,7 @@ var startQuiz = function() {
 
 var countdown = function() {
     //amount of seconds given
-    var timeRemaining = 75;
+    timeRemaining = 30;
 
     //reset player score every time game starts
     playerScore = 0;
@@ -66,7 +59,8 @@ var countdown = function() {
         else {
             //stops timer
             clearInterval(timeInterval);
-            //endGame();
+            
+            endGame();
         }
 
         
@@ -121,22 +115,28 @@ var countdown = function() {
 
 //function to move to next question when click event occurs on answer choice list element
  var nextQuestion = function (event) {
-     //if question counter has not reached the maximum number then move to next question
-     if(questionCounter < 4) {
 
-        //element holding child elements involving all question info.
-        let questionDataEl = document.getElementById("question-item");
-        //element holding child elements involving all answer choice info.
-        let answerDataEl = document.getElementById("answer-choices-shown");
-        //increase question counter
-        questionCounter++;
-        //add to player score if correct answer is clicked
-        if(event.target.getAttribute("correct-answer") === "true") {
-            playerScore += 5;
-        }
-        //make the elements holding question/answer info. blank so that the runquestions function can add new elements with the new question's information
-        questionDataEl.innerHTML = '';
-        answerDataEl.innerHTML = '';
+    
+    //element holding child elements involving all question info.
+    let questionDataEl = document.getElementById("question-item");
+    //element holding child elements involving all answer choice info.
+    let answerDataEl = document.getElementById("answer-choices-shown");
+    //increase question counter
+    questionCounter++;
+    //add to player score if correct answer is clicked
+    if(event.target.getAttribute("correct-answer") === "true") {
+        playerScore += 5;
+    }
+
+    else {
+        timeRemaining -= 5;
+    }
+    //make the elements holding question/answer info. blank so that the runquestions function can add new elements with the new question's information
+    questionDataEl.innerHTML = '';
+    answerDataEl.innerHTML = '';
+     //if question counter has not reached the maximum number then move to next question
+     if(questionCounter < questionObjectArray.length) {
+
         runQuestions();
      }
 
@@ -148,16 +148,38 @@ var countdown = function() {
  }
 //function to end the game by blanking page content (main tag with page-content class in html)
  var endGame = function() {
+     //hide timer 
+     document.getElementById("timer").style.visibility = "hidden";
      //clear screen
-    let theScreen = document.getElementsByClassName("page-content");
+    let theScreen = document.getElementById("game-screen");
     theScreen.innerHTML = '';
+
+    //create elements for the player's score and other info.
+
+    let finalScoreEl = document.createElement("div")
+
+     let nameInput = document.createElement("input");
+     nameInput.setAttribute("type", "text");
+     nameInput.setAttribute("placeholder", "Enter Name");
+     nameInput.addEventListener("submit", inputPlayerInfo);
+
+     let shownScore = document.createElement("div");
+     shownScore.innerHTML = "<h3> Your Final Score is " + playerScore + " Nice Work! <br> The current high score is " + localStorage.getItem("highScoreValue") + " </h3> <br> <h4> Enter name and try again <h4>";
+
+     finalScoreEl.appendChild(shownScore);
+     finalScoreEl.appendChild(nameInput);
+     theScreen.appendChild(finalScoreEl);
+
  }
 
- //function to create elements for the player's score and other info.
- var finalScoreInfo = function() {
-     let finalScoreEl = document.createElement("li")
+ var inputPlayerInfo = function() {
+     //input player's score if higher than current high score in 
+     if(localStorage.getItem("highScoreValue") < playerScore) {
+        localStorage.setItem("highScoreValue", playerScore);
+        localStorage.setItem("highScoreName", player)
+     }
 
-     finalScoreEl.textContent = playerScore;
+    
 
  }
 
