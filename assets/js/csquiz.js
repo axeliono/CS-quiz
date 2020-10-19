@@ -179,7 +179,7 @@ var countdown = function() {
      //input player's score if higher than current high score in 
      if(localStorage.getItem("highScoreValue") < playerScore) {
         localStorage.setItem("highScoreValue", playerScore);
-        localStorage.setItem("highScoreName", document.getElementById("input-box").value);
+        localStorage.setItem("highScoreName", document.querySelector("input[name='Player-Name']").value);
      }
      location.reload();
 
